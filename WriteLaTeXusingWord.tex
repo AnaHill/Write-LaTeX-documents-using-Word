@@ -1,0 +1,113 @@
+% WriteLaTeXinWord.tex
+% Notice: 
+	% Now using \input command to add draft.tex
+		% \input{filename} does not force page breaks. 
+		% Typically used to add smaller chunks of content, 
+		% For example, \input is a good choice to add a formula or table from a separate source file
+	% \include adds a page break before the added content. 
+		% This is great for chapters, which are physically separated from previous and subsequent contents. 
+
+%%%%%%%%%%%%%%%%
+% Choose style
+\newcommand{\mode}{0} % (IEEE used in this example template) 0 = IEEE draft style, 1 = IEEE final (conference)
+%\newcommand{\pagenumbering}{1} % 1 = page numbering on,     0 = no page numbering
+\newcommand{\figPosInText}{1}  % 1 = figs normally on text, 0 = figs to end
+%%%%%%%%%%%%%%%%%%
+
+\ifnum\mode=0 % IEEE draft style, no foot
+	\documentclass[draftclsnofoot, onecolumn, 12pt]{./partfiles/IEEEtran}
+\else % IEEE style, 2 columns
+	\documentclass[conference]{./partfiles/IEEEtran}
+\fi
+\usepackage{cite} % IEEEcitation style
+
+\usepackage{verbatim} % for multiline 
+% \ifnum\pagenumbering=0 
+% 	% no page numbering
+% 	\pagestyle{empty}
+% 	% notice: after \maketitle, there is also own \thispagestyle{} command
+% \fi
+
+% Position of Figures / Tables
+\ifnum\figPosInText=0 
+	% Figures and tables set to the end after references
+	\usepackage[nomarkers]{endfloat} 
+\fi
+
+%%%%%%%%%%%%%%%%%%%%
+% some addition commands
+\newcommand{\vect}[1]{\boldsymbol{#1}} % bold vectors
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+%%%% load packages %%%%%%%%%%%%%%%%%%%
+% GRAPHICS RELATED PACKAGES
+\ifCLASSINFOpdf 
+  \usepackage[pdftex]{graphicx}
+  \graphicspath{{./figs/}}
+\else
+  \usepackage[dvips]{graphicx}
+  \graphicspath{{./figs/}}
+\fi
+
+% To add parts from another .tex file (see below the file), e.g. figures, tables, equations
+% see also: https://texblog.org/2012/12/04/keeping-things-organized-in-large-documents/
+\usepackage{catchfilebetweentags} % load the package
+\newcommand{\loadPart}[1]{ 
+	% define command to load figures, equations, tables,...
+   \ExecuteMetaData[./partfiles/additional_parts.tex]{#1} 
+   % call the package macro to load chunk from file
+}
+
+\usepackage{subcaption} %\usepackage{subfigure}
+\usepackage{amsmath} 
+% \usepackage{bm} % bold symbols´, but not needed as \boldsymbol are included in amsmath 
+\usepackage{dblfloatfix} % To enable figures at the bottom of page
+\usepackage{epstopdf} % for eps figs
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{soul, color} % higlight text: \usepackage{color,soul}
+\usepackage{placeins} % to have full control for figure locations, requires \FloatBarrier command after \end{figure} 
+\usepackage{textcomp} % textmu etc
+\usepackage{hyperref} % hyperlinks
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\title{How to write \LaTeX{} documents using Word}
+\author{\IEEEauthorblockN{Antti-Juhana~M\"aki\IEEEauthorrefmark{2}\IEEEauthorrefmark{1}\\}
+\IEEEauthorblockA{\IEEEauthorrefmark{2} Tampere, Finland\\}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Email: maki.antti.j@gmail.com}}
+\maketitle
+% \ifnum\pagenumbering=0 % no page numbering
+% 	\thispagestyle{empty} % no page number to title page either
+% \fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{abstract}
+%\begin{bfseries} 
+%	A  
+%\end{bfseries}
+%\end{abstract}
+%\begin{IEEEkeywords}
+% temperature, cell culture, cardiomyocytes
+%\end{IEEEkeywords}
+%\IEEEpeerreviewmaketitle
+%\textbf{Note to Practitioners}
+%\begin{itemize}
+	%\item We did
+%\end{itemize}
+%\section{Introduction}\label{sec:introduction}
+%\IEEEPARstart{C}{ell} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{main_text}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifCLASSOPTIONcaptionsoff
+  % trigger a \newpage just before the given reference
+  % number - used to balance the columns on the last page
+  \newpage
+\fi 
+\bibliographystyle{./partfiles/IEEEtran}
+\bibliography{./partfiles/reference_list}
+\end{document}
+
