@@ -1,0 +1,124 @@
+\section*{Abstract}
+
+This minimal example document explains, how you can create \LaTeX{} (.tex) and .pdf files using Word. Shortly, idea is
+to write text in Word document with some additional \LaTeX{} commands included. Powershell scripts are used to convert
+this Word document to .tex file using \href{https://pandoc.org/}{Pandoc}, which can be then used to build final pdf-file
+using e.g.~pdflatex.
+
+\section{Introduction}
+
+\LaTeX{} is a great typesetting system, where idea is to focus more on text, not the outlook, during writing process,
+and let the program to convert the text to then final outlook. Compared to WYSIWYG (What You See Is What You Get)
+editors like Microsoft Word, no special software is needed during writing, allowing to use any text editor. To learn how
+to write your documents with \LaTeX{}, for example
+\href{https://www.ctan.org/tex-archive/info/lshort/english/}{The not so Short Introduction to \LaTeX{}} by Tobias
+Oetiker is a great document to start. It also lists multiple advantages of \LaTeX{} over normal word processors, such as
+encouraging authors to write well-structures documents.
+
+At this point, you might think \textbf{why would you even consider using Word if you know already, or you are willing to
+learn, \LaTeX{}?}
+
+Firstly, Microsoft Word provides great commenting tools and grammar checking for multiple languages. Secondly,
+\textbf{if your co-authors, colleagues, or supervisors are not using \LaTeX{}}, you typically need to convert your
+document to Word (or .pdf) format for them. This conversion is not typically a big problem, even though some manual
+editing is usually required. However, there is \textbf{no easy way to automatically move comments and text changes}
+\textbf{from Word (or .pdf) document (from your co-authors) back to your original .tex file}. Instead, you need to
+manually move all changes back to original document. \emph{If you think there is a nice solution for this, please let me
+know!} Finally, and this is more an opinion from a not so code-oriented person than absolute truth, it is typically
+easier and faster to read and write (plain) Word document than plain \LaTeX{}-document.
+
+General workflow to write \LaTeX{}-documents using Microsoft Word is following. Main writing work is done by editing
+Word document, \verb|WriteLaTeXusingWord.docx| in this example, which then will be converted to \verb|main_text.tex|
+file that includes most of the document text. This file is then included in your main \LaTeX{}-document,
+\verb|WriteLaTeXusingWord.tex| in this example, using \verb|\input{main_text}| command.
+
+\section{Methods}
+
+In this section, instruction how to write certain parts are described. In this example, ``IEEE draft style'' is
+implemented for the final .pdf outlook, but this can easily be changed to fitting for your purpose.
+
+\subsection{Prerequisite}
+
+This approach uses Windows PowerShell script to run \href{https://pandoc.org/}{Pandoc} commands. Furthermore, \LaTeX{}
+environment is naturally needed (e.g.~by installing \href{https://miktex.org/}{MikTeX}) including pdflatex for .pdf
+files. Furthermore, it is required to download
+\href{ https://www.ctan.org/pkg/catchfilebetweentags}{catchfilebetweentags} package to your \LaTeX{}-environment.
+
+\subsection{Refences}
+
+In this example, IEEE citation style is used. For citations, use style \verb|~\cite{your_citation}|. You can include
+multiple citations like~\cite{Maki2018, Maki2016} using command \verb|~\cite{citation1, citation2}|, or
+when referring a book page use \verb|~\cite[p.~page_number]{your_citation}|, for example when refering to book by Dorf
+and Bishop~\cite[p.~391]{Dorf2005}.
+
+\subsection{Text and symbols}
+
+Write specific \LaTeX{} commands to include symbols and special characters. There are multiple sources to find these
+commands, for example see \href{https://artofproblemsolving.com/wiki/index.php/LaTeX:Symbols}{this} or
+\href{https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols}{this}.
+
+\subsection{Adding figures}
+
+You can copy-paste figures, equations and tables to your .docx document together with \verb|\loadPart|. This is not
+necessary but can help reading. The quality of snapshots do not affect the final results as images will be created
+during \LaTeX{}-conversion process. However, \textbf{check that ``Alt Text'' field is empty for these figures} as
+highlighted below. Notice, that \textbf{figure below is not shown in the .pdf file} as it is not loaded with
+\verb|\loadPart| command!
+
+When you want to add figures to your final document, use \verb|\loadPart| command. First, if you would like to refer to
+figure below, use command \verb|Fig.~\ref{fig:sine}|, where \verb|fig:sine| is tag of the figure given in
+\verb|\loadPart| command. For example, to refer figure below, you could something like Sine signal is shown in
+Fig.~\ref{fig:sine}. Next, to add figure to final document, use command \verb|\loadPart{fig:sine}|
+
+\loadPart{fig:sine}
+
+As a second example, another figure, Fig.~\ref{fig:closedloop}, is presented below to demonstrate how
+figure numbering is created in \LaTeX{} environment.
+
+\loadPart{fig:closedloop}
+
+\subsection{Writing equations}
+
+Write equations using \LaTeX{}. One example is given next. Typical controller is PID (Proportional-Integral-Derivate).
+Mathematically, it can be presented using Eq.~\ref{eq:contpid}
+
+\loadPart{eq:contpid}
+
+\noindent where \(K_p\), \(K_i\) and \(K_d\) are non-negative coefficients of proportional, integra, and derivative
+parts.
+
+Above equation is written in \LaTeX{} using commands
+
+\begin{verbatim}
+
+\begin{equation} \label{eq:contpid}
+
+    u(t)=K_pe(t) + K_i\int_{0}^{t} e(\tau) d\tau + K_d\frac{de(t)}{dt}
+
+\end{equation}
+
+\end{verbatim}
+
+\subsection{Writing tables}
+
+Example table is given using command \verb| Table~\ref{table:messivsronaldo}|; see this table in
+Table~\ref{table:messivsronaldo}.
+
+\loadPart{table:messivsronaldo}
+
+\section{Conclusion}
+
+This tutorial introduced the workflow how to write your paper using Word and convert that to \LaTeX{}-document and
+furthermore to final outlook. For example of ``final'' outlook, see .pdf version of this document. Future work could
+include more automation and control of your workflow. But probably then you should consider
+\href{https://en.wikipedia.org/wiki/Makefile}{Makefile} or similar approaches.
+
+\section*{Acknowledgment}
+
+There are several people that have been helped me in this process. I warmly thank Juhana Ketola for his \emph{pro bono}
+help related to PowerScipt. Thanks to my current and former colleagues, Sampo Tuukkanen, Mikko Peltokangas and Ville
+Rantanen helping with \LaTeX{}, especially introducing \emph{catchfilebetweentags,} developed by Florent Chervet.
+Special thanks for Florent, saved me a lot of time! Furthermore, ``tom's'' (sorry, couldn't find author information,
+please share!) great
+\href{ https://texblog.org/2012/12/04/keeping-things-organized-in-large-documents/}{blog post in texblog} helped to
+implement \emph{catchfilebetweentags} package.
