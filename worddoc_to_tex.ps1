@@ -1,5 +1,5 @@
-# Dokumentin tiedot
-$paper_name = 'WriteLaTeXusingWord' # input file
+# Document info
+$paper_name = 'WriteLaTeXusingWord' # input file name
 $Folder_path = $(get-location).Path + '\'; 
 # Write-Output "Folder is: $Folder_path"s
 
@@ -8,17 +8,16 @@ $Fullpath_inputfile =  $Folder_path + $input_filename # docx
 $osatiedosto = $Folder_path + 'partfiles/additional_parts.tex'
 
 $output_filename_tex = $paper_name + '.tex'
-# $output_filename_pdf = $paper_name + '.pdf' # not needed if .pdf no conversion
 
-# temporal_naames
-$out_draft_name_temp = 'temp.md' # poistetaan lopussa 
+# temporal_names
+$out_draft_name_temp = 'temp.md' # will be deleted after conversion
 $out_draft_name = 'draft'
-$out_draft_name_md = 'draft' + '.md'
+$out_draft_name_md = 'draft' + '.md' # will be deleted after conversion
 $out_draft_name_tex = 'main_text.tex'# 'textfile' + '.tex'
 $Fullpath_out_draft_name_md =  $Folder_path + $Fullpath_out_draft_name_md # md
 
 #############################
-## DOCX to MD
+## .docx to .md
 Write-Output ""
 Write-Output "Converting Word-document to .tex file" # pdf (and LaTeX) document"
 Write-Output "Folder is: $Folder_path"
@@ -32,7 +31,7 @@ Write-Output ""
 Write-Host "...temp file ($out_draft_name_temp) ready"
 Write-Output ""
 Write-Output "Modifying temp file"
-# Modify temp file
+# Modifying temp file
 (gc $out_draft_name_temp) | % {$_ -replace "\\textasciitilde{}", "~"} | sc $out_draft_name_temp
 (gc $out_draft_name_temp) | % {$_ -replace "\\\\", "\"} | sc $out_draft_name_temp
 (gc $out_draft_name_temp) | % {$_ -replace "\\\~", "~"} | sc $out_draft_name_temp
@@ -50,9 +49,9 @@ Write-Host "Removed extra \ in front of \,~,$,^,[,],*,_ in $out_draft_name_temp"
 # Converting Abstract, References, and Acknowledgment to non-number headings
 (gc $out_draft_name_temp) | % {$_ -replace "\# Abstract", "\section*{Abstract}"} | sc $out_draft_name_temp
 (gc $out_draft_name_temp) | % {$_ -replace "\# Acknowledgment", "\section*{Acknowledgment}"} | sc $out_draft_name_temp
-(gc $out_draft_name_temp) | % {$_ -replace "\# References", ""} | sc $out_draft_name_temp # delete reference heading if it comes from LaTeX / biblatex
-# (gc $out_draft_name_temp) | % {$_ -replace "\# References", "\section*{References}"} | sc $out_draft_name_temp
-# Write-Host "Converted Abstract and Acknowledgment to non-number headings"
+#(gc $out_draft_name_temp) | % {$_ -replace "\# References", "\section*{References}"} | sc $out_draft_name_temp
+# Following will delete reference heading if it comes from LaTeX / biblatex
+(gc $out_draft_name_temp) | % {$_ -replace "\# References", ""} | sc $out_draft_name_temp 
 Write-Host "Converted Abstract, References, and Acknowledgment to non-number headings"
 
 Write-Host "Removing empty fig lines from $out_draft_name_temp and creating $out_draft_name_md, then deleting $out_draft_name_temp"
@@ -64,12 +63,9 @@ Remove-Item  $out_draft_name_temp
 Write-Host "...deleted"
 Write-Host ""
 
-
 ##############################
-## MD to TEX 
+## converting .md to .tex 
 Write-Output "Converting $out_draft_name_md to .tex file "
-# pandoc $out_draft_name_md -o $out_draft_name_tex  -f markdown-auto_identifiers -t latex
-# pandoc $out_draft_name_md -o $out_draft_name_tex --wrap=preserve -f markdown-auto_identifiers -t latex
 pandoc $out_draft_name_md -o $out_draft_name_tex --columns=120 -f markdown-auto_identifiers -t latex
 Write-Host "$input_filename converted to $out_draft_name_tex"
 Write-Output ""
@@ -86,23 +82,12 @@ Write-Host "Modified image size width"
 Write-Host "Set positioning of all figures to [htb] in $out_draft_name_tex"
 Write-Host "Removed \section{References} from $out_draft_name_tex"
 Write-Host "Removed \tightlist from $out_draft_name_tex"
-# Setting FloatBarrier to figure-environments
-### NYT ei tartte jos figure - ympäristössä jo on
-# (Get-Content $out_draft_name_tex) | 
-    # Foreach-Object {
-        # $_ # send the current line to output
-        # if ($_ -match "\\end{figure}") 
-        # {
-        #   # Add Lines after the selected pattern 
-            # "\FloatBarrier"
-        # }
-    # } | Set-Content $out_draft_name_tex
-# Write-Host "Added \FloatBarrier to figure-environments in $out_draft_name_tex"
 
 ########
-# jos Floatbarrier halutaan pois --> osat.tex
-(gc $osatiedosto) | % {$_ -replace "^\\FloatBarrier", "%\FloatBarrier"} | sc $osatiedosto
-# jos haluaa nuo takaisin
+# These can be used to control FloatBarrier in additional_parts.tex
+# commenting out FloatBarrier in additional_parts.tex--> 
+# (gc $osatiedosto) | % {$_ -replace "^\\FloatBarrier", "%\FloatBarrier"} | sc $osatiedosto
+# keeping FloatBarrier 
 (gc $osatiedosto) | % {$_ -replace "^\%\\FloatBarrier", "\FloatBarrier"} | sc $osatiedosto
 
 
