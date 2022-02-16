@@ -1,8 +1,14 @@
-This is short document how to write LaTeX documents using Word. Working principle is to write Word-document with some LaTeX-command that are used to include citations and references, figures, tables, and equations using LaTeX. Simplified process is following. Firstly, write you document in Word with LaTeX-commands. Then, convert the Word-document to .tex using the Powershell script (worddoc_to_tex.ps1). If needed, upload (e.g. if using Overleaf) the converted .tex file to so that your main/root LaTeX document (WriteLaTeXusingWord.tex in this example) can find it. Then, you can build the final document e.g. using pdflatex. Flowcharts below illustrates the working principle. For more detailed information, see Word-document or converted pdf-file.
+This is short example how to write LaTeX documents using Word. 
+
+Even though you know LaTeX (or you are willing to learn it), this repo can be useful when
+- your supervisor(s) and/or co-authors are not familiar with LaTeX, in other words you can not share LaTeX document with them
+- you do not want to manually move their comments, edits, and texts to your LaTeX-document
+  
+Working principle is to write Word-document with some LaTeX-command. Firstly, write you document in Word with LaTeX-commands that are used to include citations and references, symbols, figures, tables, and equations using LaTeX. Then, convert the Word-document to .tex using the Powershell script (_worddoc_to_tex.ps1_). If needed, upload (e.g. if using Overleaf) the converted .tex file so that your main/root LaTeX document (_WriteLaTeXusingWord.tex_ in this example) can find it. Then, you can build the final document e.g. using pdflatex. Flowcharts below illustrates the working principle. For more detailed information, see Word-document or converted pdf-file.
 
 ![flowchart](figs/flowchart1.png)
 ![flowchart](figs/flowchart2.png)
 
 
 # Acknowledgment
-I warmly thank Juhana Ketola for his pro bono help related to PowerScipt. Thanks to my current and former colleagues, Sampo Tuukkanen, Mikko Peltokangas and Ville Rantanen helping with $\LaTeX{}$, especially introducing _catchfilebetweentags_ package, developed by Florent Chervet. Special thanks for Florent, your work helped me a lot of time! Furthermore, “tom’s” (sorry, couldn’t find author information, please share!) great [blog post in texblog](https://texblog.org/2012/12/04/keeping-things-organized-in-large-documents/) helped to implement _catchfilebetweentags_ package.
+I warmly thank Juhana Ketola for his pro bono help related to PowerScipt. Thanks to my current and former colleagues, Sampo Tuukkanen, Mikko Peltokangas and Ville Rantanen helping with LaTeX, especially introducing _catchfilebetweentags_ package, developed by Florent Chervet. Special thanks for Florent, your work helped me a lot of time! Furthermore, “tom’s” (sorry, couldn’t find author information, please share!) great [blog post in texblog](https://texblog.org/2012/12/04/keeping-things-organized-in-large-documents/) helped to implement _catchfilebetweentags_ package.
