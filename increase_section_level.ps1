@@ -4,9 +4,10 @@
     # \subsection --> \section
     # \subsubsection --> \subsection
     # Optional
-        # paragraph --> subsubsection
+        # \paragraph --> \subsubsection
+        # \subparagraph --> \paragraph
     
-$modified_file_name = 'main_text.tex' 
+$modified_file_name = 'main_text.tex' # give file name to be edited
 (gc $modified_file_name) | % {$_ -replace "\\section{", "\chapter{"} | sc $modified_file_name
 (gc $modified_file_name) | % {$_ -replace "\\section*{", "\chapter*{"} | sc $modified_file_name # abstract etc non numbered chapters
 (gc $modified_file_name) | % {$_ -replace "\\subsection{", "\section{"} | sc $modified_file_name 
