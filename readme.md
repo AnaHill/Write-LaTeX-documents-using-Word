@@ -3,6 +3,9 @@ This is short example how to write LaTeX documents using Word.
 Even though you know LaTeX (or you are willing to learn it), this repo can be useful when
 - your supervisor(s) and/or co-authors are not familiar with LaTeX, in other words you can not share LaTeX document with them
 - you do not want to manually move their comments, edits, and texts to your LaTeX-document
+
+This method was used to write the following publication freely available in [this link](https://doi.org/10.1109/TASE.2023.3309668)
+> A. -J. Mäki, J. T. Koivumäki, J. Hyttinen and P. Kallio, "Simulation-Based Study of Control Strategies for Beating of Human Cardiomyocyte Cultures," in IEEE Transactions on Automation Science and Engineering, doi: 10.1109/TASE.2023.3309668.
   
 Working principle is to write Word-document with some LaTeX-command. Firstly, write you document in Word with LaTeX-commands that are used to include citations and references, symbols, figures, tables, and equations using LaTeX. Then, convert the Word-document to .tex using the Powershell script (_worddoc_to_tex.ps1_). If needed, upload (e.g. if using Overleaf) the converted .tex file so that your main/root LaTeX document (_WriteLaTeXusingWord.tex_ in this example) can find it. Then, you can build the final document e.g. using pdflatex. Flowcharts below illustrates the working principle. For more detailed information, see Word-document or converted pdf-file.
 
